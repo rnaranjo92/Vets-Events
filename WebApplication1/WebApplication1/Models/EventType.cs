@@ -2,7 +2,7 @@
 
 namespace VetsEvents.Models
 {
-    public class Genre
+    public class EventType
     {
         public byte Id { get; set; }
 
