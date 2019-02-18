@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201902182206219_AddEventAndGenreTable.Designer.cs">
       <DependentUpon>201902182206219_AddEventAndGenreTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902182250304_OverrideConventionsForEventsAndGenres.cs" />
+    <Compile Include="Migrations\201902182250304_OverrideConventionsForEventsAndGenres.Designer.cs">
+      <DependentUpon>201902182250304_OverrideConventionsForEventsAndGenres.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -276,6 +280,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902182206219_AddEventAndGenreTable.resx">
       <DependentUpon>201902182206219_AddEventAndGenreTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902182250304_OverrideConventionsForEventsAndGenres.resx">
+      <DependentUpon>201902182250304_OverrideConventionsForEventsAndGenres.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
