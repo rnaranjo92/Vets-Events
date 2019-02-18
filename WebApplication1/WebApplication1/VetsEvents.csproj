@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebApplication1</RootNamespace>
-    <AssemblyName>WebApplication1</AssemblyName>
+    <RootNamespace>VetsEvents</RootNamespace>
+    <AssemblyName>VetsEvents</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -183,9 +183,16 @@
     <Compile Include="Migrations\201902182149284_InitialModel.Designer.cs">
       <DependentUpon>201902182149284_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902182206219_AddEventAndGenreTable.cs" />
+    <Compile Include="Migrations\201902182206219_AddEventAndGenreTable.Designer.cs">
+      <DependentUpon>201902182206219_AddEventAndGenreTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -266,6 +273,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201902182149284_InitialModel.resx">
       <DependentUpon>201902182149284_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902182206219_AddEventAndGenreTable.resx">
+      <DependentUpon>201902182206219_AddEventAndGenreTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
