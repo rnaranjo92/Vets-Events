@@ -1,6 +1,8 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-family: Patua One, Helvetica, Arial, sans-serif;
+    font-size: 15px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +23,96 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+/*Bootstrap Overrides*/
+.navbar-inverse {
+    background-color: #4576FE;
+    border-color: #C8C8C8;
+    border-bottom: 4px solid #C8C8C8;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: #ffffff;
+}
+.navbar-inverse .navbar-brand {
+    color: #ffffff;
+    font-size: 26px;
+}
+.form-group {
+    margin-bottom: 27px;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 20px 10px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    font-weight:200;
+}
+.field-validation-error {
+    color: #f00;
+}
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    margin-bottom: 0;
+    font-size: 17px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 12px;
+}
+.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+.dropdown-divider {
+    height: 0;
+    margin: .5rem 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+.dropdown-item {
+    display: block;
+    width: 175px;
+    padding: 1.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #2251d4;
+}
+.navbar-nav > li > a {
+    padding-top: 17px;
+    padding-bottom: 15px;
 }
