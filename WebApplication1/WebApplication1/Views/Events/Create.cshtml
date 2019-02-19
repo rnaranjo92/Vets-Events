@@ -1,0 +1,26 @@
+﻿@model VetsEvents.ViewModels.EventFormViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+<form>
+    <div class="form-group">
+        @Html.LabelFor(m=>m.Venue)
+        @Html.TextBoxFor(m=>m.Venue, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Time)
+        @Html.TextBoxFor(m => m.Time, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EventType)
+        @Html.DropDownListFor(m=>m.EventType, new SelectList(Model.EventTypes,"Id","Name"),"", new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
