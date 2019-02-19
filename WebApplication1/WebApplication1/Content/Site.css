@@ -25,6 +25,11 @@ textarea {
     max-width: 280px;
 }
 /*Bootstrap Overrides*/
+.btn-primary {
+    color: #fff;
+    background-color: #4576fe;
+    border-color: #2e6da4;
+}
 .navbar-inverse {
     background-color: #4576FE;
     border-color: #C8C8C8;
@@ -115,4 +120,10 @@ textarea {
 .navbar-nav > li > a {
     padding-top: 17px;
     padding-bottom: 15px;
+}
+.btn btn-cancel {
+    color: #fff;
+    background-color: #fff;
+    border-color: #2e6da4;
+
 }
