@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
@@ -31,10 +30,16 @@ namespace VetsEvents.Controllers
         [HttpPost]
         public ActionResult Create(EventFormViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                viewModel.EventTypes = _context.EventTypes.ToList();
+                return View("Create", viewModel);
+            }
+
             var VetEvent = new Event
             {
                 EventOrganizerId = User.Identity.GetUserId(),
-                DateTime = viewModel.DateTime,
+                DateTime = viewModel.GetDateTime(),
                 EventTypeId = viewModel.EventType,
                 Venue = viewModel.Venue
             };
