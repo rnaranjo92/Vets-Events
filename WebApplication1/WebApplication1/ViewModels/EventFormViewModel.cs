@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using VetsEvents.Models;
 
 namespace VetsEvents.ViewModels
@@ -10,5 +11,11 @@ namespace VetsEvents.ViewModels
         public string Time { get; set; }
         public byte EventType { get; set; }
         public IEnumerable<EventType> EventTypes { get; set; }
+
+        public DateTime DateTime
+        {
+            get { return DateTime.Parse(string.Format("{0}{1}", Date, Time)); }
+        }
     }
+
 }

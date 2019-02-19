@@ -34,7 +34,7 @@ namespace VetsEvents.Controllers
             var VetEvent = new Event
             {
                 EventOrganizerId = User.Identity.GetUserId(),
-                DateTime = DateTime.Parse(string.Format("{0} {1}", viewModel.Date, viewModel.Time)),
+                DateTime = viewModel.DateTime,
                 EventTypeId = viewModel.EventType,
                 Venue = viewModel.Venue
             };
