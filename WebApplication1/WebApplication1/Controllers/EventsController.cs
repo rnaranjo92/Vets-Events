@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using Microsoft.AspNet.Identity;
+using System;
+using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
 using VetsEvents.ViewModels;
@@ -13,6 +15,8 @@ namespace VetsEvents.Controllers
         {
             _context = new ApplicationDbContext();
         }
+
+        [Authorize]
         public ActionResult Create()
         {
             var viewModel = new EventFormViewModel
@@ -23,5 +27,21 @@ namespace VetsEvents.Controllers
 
             return View(viewModel);
         }
+        [Authorize]
+        [HttpPost]
+        public ActionResult Create(EventFormViewModel viewModel)
+        {
+            var VetEvent = new Event
+            {
+                EventOrganizerId = User.Identity.GetUserId(),
+                DateTime = DateTime.Parse(string.Format("{0} {1}", viewModel.Date, viewModel.Time)),
+                EventTypeId = viewModel.EventType,
+                Venue = viewModel.Venue
+            };
+            _context.Events.Add(VetEvent);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        } 
     }
 }

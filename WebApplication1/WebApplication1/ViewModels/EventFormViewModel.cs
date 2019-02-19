@@ -8,7 +8,7 @@ namespace VetsEvents.ViewModels
         public string Venue { get; set; }
         public string Date { get; set; }
         public string Time { get; set; }
-        public int EventType { get; set; }
+        public byte EventType { get; set; }
         public IEnumerable<EventType> EventTypes { get; set; }
     }
 }

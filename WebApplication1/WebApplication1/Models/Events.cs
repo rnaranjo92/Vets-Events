@@ -7,11 +7,15 @@ namespace VetsEvents.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public ApplicationUser EventOrganizer { get; set; }
 
         [Required]
+        public string EventOrganizerId { get; set; }
+
         public EventType EventType { get; set; }
+
+        [Required]
+        public byte EventTypeId { get; set; }
 
         [Required]
         [StringLength(255)]
