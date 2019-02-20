@@ -21,6 +21,7 @@ namespace VetsEvents.Models
         [StringLength(255)]
         public string Venue { get; set; }
 
+        [Required]
         public DateTime DateTime { get; set; }
     }
 }

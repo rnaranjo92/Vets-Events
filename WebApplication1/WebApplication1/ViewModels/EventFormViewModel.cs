@@ -11,7 +11,6 @@ namespace VetsEvents.ViewModels
         public string Venue { get; set; }
 
         [Required]
-        [FutureDate]
         public string Date { get; set; }
 
         [Required]
@@ -26,7 +25,7 @@ namespace VetsEvents.ViewModels
 
         public DateTime GetDateTime()
         {
-            return DateTime.Parse(string.Format("{0}{1}", Date, Time)); 
+            return DateTime.Parse(string.Format("{0} {1}", Date, Time)); 
         }
     }
 

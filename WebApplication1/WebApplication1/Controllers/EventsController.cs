@@ -22,8 +22,6 @@ namespace VetsEvents.Controllers
             {
                 EventTypes = _context.EventTypes.ToList()
             };
-
-
             return View(viewModel);
         }
         [Authorize]
