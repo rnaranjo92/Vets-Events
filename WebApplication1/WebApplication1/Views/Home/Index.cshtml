@@ -17,11 +17,12 @@
         </div>
         <div class="details">
             <span class="organizer">
-                @vetEvent.EventOrganizer.Name
+                @vetEvent.EventOrganizer.Name <button data-user-id="@vetEvent.EventOrganizerId" class="btn-link js-toggle-follower">Follow</button>
             </span>
             <span class="eventtype">
                 @vetEvent.EventType.Name
             </span>
+
             <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
         </div>
     </li>
@@ -40,6 +41,17 @@
                     .fail(function () {
                         alert("Something failed!");
                     });
+            });
+
+            $(".js-toggle-follower").click(function (e) {
+                var button = $(e.target)
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button.text("Following!")
+                    })
+                    .fail(function () {
+                        alert("Something failed!")
+                    })
             });
         });
     </script>
