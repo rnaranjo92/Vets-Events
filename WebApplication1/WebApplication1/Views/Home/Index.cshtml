@@ -22,8 +22,25 @@
             <span class="eventtype">
                 @vetEvent.EventType.Name
             </span>
+            <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
         </div>
     </li>
         
     }
 </ul>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { eventId: button.attr("data-event-id") })
+                    .done(function () {
+                        button.removeClass("btn-default").addClass("btn-info").text("Going!");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+    </script>
+    }
