@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
@@ -13,6 +14,26 @@ namespace VetsEvents.Controllers
         public EventsController()
         {
             _context = new ApplicationDbContext();
+        }
+
+        [Authorize]
+        public ActionResult Attending()
+        {
+            var userId = User.Identity.GetUserId();
+            var events = _context.Attendance
+                .Where(a => a.AttendeeId == userId)
+                .Select(a=>a.Event)
+                .Include(a=>a.EventOrganizer)
+                .Include(a =>a.EventType)
+                .ToList();
+
+            var viewModel = new EventsViewModel
+            {
+                UpcomingEvents = events,
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Title = "Events I'm attending"
+            };
+            return View("Events",viewModel);
         }
 
         [Authorize]

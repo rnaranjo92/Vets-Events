@@ -1,10 +1,10 @@
-﻿@model IEnumerable<VetsEvents.Models.Event>
+﻿@model VetsEvents.ViewModels.EventsViewModel
 @{
     ViewBag.Title = "Home Page";
 }
-
+<h2 class="voffset5">@Model.Title</h2>
 <ul class="vetevents">
-    @foreach (var vetEvent in Model)
+    @foreach (var vetEvent in Model.UpcomingEvents)
     {
     <li>
         <div class="date">
@@ -17,13 +17,21 @@
         </div>
         <div class="details">
             <span class="organizer">
-                @vetEvent.EventOrganizer.Name <button data-user-id="@vetEvent.EventOrganizerId" class="btn-link js-toggle-follower">Follow</button>
+                @vetEvent.EventOrganizer.Name
+
+                @if (Model.IsAuthenticated)
+                {
+                    <button data-user-id="@vetEvent.EventOrganizerId" class="btn-link js-toggle-follower">Follow</button>
+                }
+
             </span>
             <span class="eventtype">
                 @vetEvent.EventType.Name
             </span>
-
-            <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                @if (Model.IsAuthenticated)
+                {
+                    <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                }
         </div>
     </li>
         

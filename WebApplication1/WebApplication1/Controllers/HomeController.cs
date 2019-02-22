@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
+using VetsEvents.ViewModels;
 
 namespace VetsEvents.Controllers
 {
@@ -21,8 +22,15 @@ namespace VetsEvents.Controllers
                 .Include(c=>c.EventType)
                 .Where(g => g.DateTime > DateTime.Now);
 
+            var viewModel = new EventsViewModel
+            {
+                UpcomingEvents = upcomingEvents,
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Title = "Upcoming events"
+            };
 
-            return View(upcomingEvents);
+
+            return View("Events",viewModel);
         }
 
         public ActionResult About()
