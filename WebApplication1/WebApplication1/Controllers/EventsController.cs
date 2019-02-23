@@ -15,6 +15,23 @@ namespace VetsEvents.Controllers
         {
             _context = new ApplicationDbContext();
         }
+        [Authorize]
+        public ActionResult Following()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var following = _context.Followings
+                .Where(f => f.FollowerId == userId)
+                .Select(f => f.Followee)
+                .ToList();
+
+            var viewModel = new FollowViewModel
+            {
+                FolloweeId = following
+            };
+
+            return View(viewModel);
+        }
 
         [Authorize]
         public ActionResult Attending()

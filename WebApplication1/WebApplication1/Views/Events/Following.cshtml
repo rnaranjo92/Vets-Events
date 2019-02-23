@@ -1,0 +1,16 @@
+﻿@model VetsEvents.ViewModels.FollowViewModel
+@{
+    ViewBag.Title = "Following";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="voffset5">List of Organizer I am Following</h2>
+@foreach (var follow in Model.FolloweeId)
+{
+<ul>
+    <li>@follow.Name</li>
+</ul> 
+}
+
+<ul></ul>
+
