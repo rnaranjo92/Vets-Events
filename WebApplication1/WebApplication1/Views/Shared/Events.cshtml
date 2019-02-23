@@ -41,10 +41,12 @@
     <script>
         $(document).ready(function () {
             $(".js-toggle-attendance").click(function (e) {
-                var button = $(e.target);
+                var button = $(e.target)
                 $.post("/api/attendances", { eventId: button.attr("data-event-id") })
                     .done(function () {
-                        button.removeClass("btn-default").addClass("btn-info").text("Going!");
+                        button.removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going!");
                     })
                     .fail(function () {
                         alert("Something failed!");

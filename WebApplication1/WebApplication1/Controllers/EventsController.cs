@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -15,6 +16,16 @@ namespace VetsEvents.Controllers
         {
             _context = new ApplicationDbContext();
         }
+
+        [Authorize]
+        public ActionResult Mine()
+        {
+            var userId = User.Identity.GetUserId();
+            var events = _context.Events.Where(e => e.EventOrganizerId == userId && e.DateTime > DateTime.Now).Include(e=>e.EventType).ToList();
+
+            return View(events);
+        }
+
         [Authorize]
         public ActionResult Following()
         {
@@ -83,7 +94,7 @@ namespace VetsEvents.Controllers
             _context.Events.Add(VetEvent);
             _context.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Mine", "Event");
         } 
     }
 }

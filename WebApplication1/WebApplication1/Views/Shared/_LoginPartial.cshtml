@@ -12,6 +12,7 @@
             @User.Identity.GetUserName()
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="@Url.Action("Mine","Events")">My Upcoming events</a>
             <a class="dropdown-item" href="@Url.Action("Attending","Events")">Events I am going</a>
             <a class="dropdown-item" href="@Url.Action("Following","Events")">Organizer I am following</a>
             <div class="dropdown-divider"></div>
