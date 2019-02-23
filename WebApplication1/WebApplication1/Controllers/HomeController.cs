@@ -20,7 +20,7 @@ namespace VetsEvents.Controllers
             var upcomingEvents = _context.Events
                 .Include(c => c.EventOrganizer)
                 .Include(c=>c.EventType)
-                .Where(g => g.DateTime > DateTime.Now);
+                .Where(g => g.DateTime > DateTime.Now && !g.IsCanceled);
 
             var viewModel = new EventsViewModel
             {

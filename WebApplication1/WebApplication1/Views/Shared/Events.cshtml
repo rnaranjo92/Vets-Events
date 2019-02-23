@@ -19,6 +19,10 @@
             <span class="organizer">
                 @vetEvent.EventOrganizer.Name
 
+                @if(vetEvent.IsCanceled)
+                {
+                    <span class="label label-warning">Cancelled</span>
+                }
                 @if (Model.IsAuthenticated)
                 {
                     <button data-user-id="@vetEvent.EventOrganizerId" class="btn-link js-toggle-follower">Follow</button>
@@ -28,7 +32,7 @@
             <span class="eventtype">
                 @vetEvent.EventType.Name
             </span>
-                @if (Model.IsAuthenticated)
+                @if (Model.IsAuthenticated && !vetEvent.IsCanceled)
                 {
                     <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
                 }

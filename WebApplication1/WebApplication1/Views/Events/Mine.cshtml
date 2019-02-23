@@ -26,10 +26,55 @@
                 </span>
                 <div class="actions">
                     <a href="@Url.Action("Edit","Events",new {id = vetEvent.Id})">Edit</a>
+                    | <a href="#" class="js-cancel-event" data-event-id="@vetEvent.Id">Cancel</a> 
                 </div>
             </div>
         </li>
-
     }
 </ul>
 
+@section scripts
+    
+    {
+    <script>
+        $(document).ready(function () {
+            $(".js-cancel-event").click(function (e) {
+                var button = $(e.target);
+
+                bootbox.dialog({
+                    title: 'Confirm',
+                    message: "Are you sure you want to cancel this event?",
+                    buttons: {
+                        no: {
+                            label: "No",
+                            className: "btn-default",
+                            callback: function () {
+                                bootbox.hideAll();
+                            }
+                        },
+                        yes: {
+                            label: "Yes",
+                            className: 'btn-danger',
+                            callback: function () {
+                                $.ajax({
+                                    url: "/api/events/" + button.attr("data-event-id"),
+                                    method: "DELETE"
+                                })
+                                    .done(function () {
+                                        button.parents("li").fadeOut("1000", function () {
+                                            $(this).remove();
+                                        })
+                                    })
+                                    .fail(function () {
+                                        alert("Something Failed!")
+                                    });
+                            }
+                        }
+                        
+                    }
+                });
+
+            });
+        });
+    </script>
+    }

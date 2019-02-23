@@ -23,7 +23,11 @@ namespace VetsEvents.Controllers
         public ActionResult Mine()
         {
             var userId = User.Identity.GetUserId();
-            var events = _context.Events.Where(e => e.EventOrganizerId == userId && e.DateTime > DateTime.Now).Include(e=>e.EventType).ToList();
+            var events = _context.Events
+                .Where(e => e.EventOrganizerId == userId && e.DateTime > DateTime.Now && !e.IsCanceled)
+                .Include(e=>e.EventType)
+                .ToList();
+
 
             return View(events);
         }
@@ -74,7 +78,7 @@ namespace VetsEvents.Controllers
                 EventTypes = _context.EventTypes.ToList(),
                 Title = "Add an Event"
             };
-            return View(viewModel);
+            return View("EventForm",viewModel);
         }
         [Authorize]
         public ActionResult Edit(int id)

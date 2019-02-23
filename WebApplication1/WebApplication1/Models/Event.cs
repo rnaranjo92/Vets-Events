@@ -7,6 +7,8 @@ namespace VetsEvents.Models
     {
         public int Id { get; set; }
 
+        public bool IsCanceled { get; set; }
+
         public ApplicationUser EventOrganizer { get; set; }
 
         [Required]

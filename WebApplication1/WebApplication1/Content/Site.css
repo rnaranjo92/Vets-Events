@@ -83,9 +83,6 @@ textarea {
     line-height: 1.42857143;
     border: 1px solid transparent;
     border-radius: 12px;
-    color: #000;
-    background-color: #ffffff;
-    border-color: #000000;
     border-radius: 8px;
 }
 .dropdown-toggle::after {
@@ -179,8 +176,11 @@ ul, ol {
     font-size: 15px;
     display:none;
 }
-.vetevents > li:hover .actions{
-    display:block;
+.vetevents > li:hover .actions {
+    display: block;
+}
+.label{
+    color:black;
 }
 
 
