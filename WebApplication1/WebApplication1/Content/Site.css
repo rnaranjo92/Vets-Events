@@ -175,7 +175,13 @@ ul, ol {
 .eventtype{
     padding-right: 0.5em;
 }
-
+.vetevents > li .actions {
+    font-size: 15px;
+    display:none;
+}
+.vetevents > li:hover .actions{
+    display:block;
+}
 
 
 

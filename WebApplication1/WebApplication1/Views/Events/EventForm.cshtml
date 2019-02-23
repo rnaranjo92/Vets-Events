@@ -1,11 +1,11 @@
 ﻿@model VetsEvents.ViewModels.EventFormViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add an Event</h2>
-@using (Html.BeginForm("Create", "Events"))
+<h2>@Model.Title</h2>
+@using (Html.BeginForm(Model.Action, "Events"))
 {
     <p class="alert alert-info">All fields are <strong>required</strong>.</p>
     <div class="form-group">
@@ -30,6 +30,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=>m.Id)
 }
 @section scripts
     {

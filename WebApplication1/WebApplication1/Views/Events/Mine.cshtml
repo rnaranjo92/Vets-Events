@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<VetsEvents.Models.Event>
 @{
-    ViewBag.Title = "Mine";
+    ViewBag.Title = "My Upcoming Events";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -24,6 +24,9 @@
                 <span class="eventtype">
                     @vetEvent.EventType.Name
                 </span>
+                <div class="actions">
+                    <a href="@Url.Action("Edit","Events",new {id = vetEvent.Id})">Edit</a>
+                </div>
             </div>
         </li>
 

@@ -17,6 +17,8 @@ namespace VetsEvents.Controllers
             _context = new ApplicationDbContext();
         }
 
+
+
         [Authorize]
         public ActionResult Mine()
         {
@@ -69,9 +71,27 @@ namespace VetsEvents.Controllers
         {
             var viewModel = new EventFormViewModel
             {
-                EventTypes = _context.EventTypes.ToList()
+                EventTypes = _context.EventTypes.ToList(),
+                Title = "Add an Event"
             };
             return View(viewModel);
+        }
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var vetEvents = _context.Events.Single(e => e.Id == id && e.EventOrganizerId == userId);
+            var viewModel = new EventFormViewModel
+            {
+                Id = vetEvents.Id,
+                EventTypes = _context.EventTypes.ToList(),
+                EventType = vetEvents.EventTypeId,
+                Venue = vetEvents.Venue,
+                Date = vetEvents.DateTime.ToString("d MMM yyyy"),
+                Time = vetEvents.DateTime.ToString("HH:mm"),
+                Title = "Edit" 
+            };
+            return View("EventForm",viewModel);
         }
         [Authorize]
         [HttpPost]
@@ -81,7 +101,7 @@ namespace VetsEvents.Controllers
             if (!ModelState.IsValid)
             {
                 viewModel.EventTypes = _context.EventTypes.ToList();
-                return View("Create", viewModel);
+                return View("EventForm", viewModel);
             }
 
             var VetEvent = new Event
@@ -94,7 +114,28 @@ namespace VetsEvents.Controllers
             _context.Events.Add(VetEvent);
             _context.SaveChanges();
 
-            return RedirectToAction("Mine", "Event");
-        } 
+            return RedirectToAction("Mine", "Events");
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(EventFormViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.EventTypes = _context.EventTypes.ToList();
+                return View("EventForm", viewModel);
+            }
+            var userId = User.Identity.GetUserId();
+            var VetEvent = _context.Events.Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
+
+            VetEvent.DateTime = viewModel.GetDateTime();
+            VetEvent.Venue = viewModel.Venue;
+            VetEvent.EventTypeId = viewModel.EventType;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Mine", "Events");
+        }
     }
 }
