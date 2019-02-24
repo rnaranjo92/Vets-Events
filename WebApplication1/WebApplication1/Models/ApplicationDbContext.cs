@@ -26,7 +26,7 @@ namespace VetsEvents.Models
         {
             modelBuilder.Entity<Attendance>()
                 .HasRequired(c => c.Event)
-                .WithMany()
+                .WithMany(c=>c.Attendances)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ApplicationUser>()
@@ -41,7 +41,7 @@ namespace VetsEvents.Models
 
             modelBuilder.Entity<UserNotification>()
                 .HasRequired(n => n.User)
-                .WithMany()
+                .WithMany(u=>u.UserNotifications)
                 .WillCascadeOnDelete(false);
 
 

@@ -54,6 +54,7 @@ namespace VetsEvents.Controllers
         public ActionResult Attending()
         {
             var userId = User.Identity.GetUserId();
+
             var events = _context.Attendance
                 .Where(a => a.AttendeeId == userId)
                 .Select(a=>a.Event)
@@ -93,7 +94,7 @@ namespace VetsEvents.Controllers
                 Venue = vetEvents.Venue,
                 Date = vetEvents.DateTime.ToString("d MMM yyyy"),
                 Time = vetEvents.DateTime.ToString("HH:mm"),
-                Title = "Edit" 
+                Title = "Edit" ,
             };
             return View("EventForm",viewModel);
         }
@@ -131,11 +132,11 @@ namespace VetsEvents.Controllers
                 return View("EventForm", viewModel);
             }
             var userId = User.Identity.GetUserId();
+
             var VetEvent = _context.Events.Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
 
-            VetEvent.DateTime = viewModel.GetDateTime();
-            VetEvent.Venue = viewModel.Venue;
-            VetEvent.EventTypeId = viewModel.EventType;
+
+            VetEvent.Update(viewModel.GetDateTime(), viewModel.Venue, viewModel.EventType);
 
             _context.SaveChanges();
 
