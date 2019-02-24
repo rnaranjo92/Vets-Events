@@ -226,10 +226,17 @@
     <Compile Include="Migrations\201902232156486_AddIsCanceledToEvent.Designer.cs">
       <DependentUpon>201902232156486_AddIsCanceledToEvent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902240054265_AddNotification.cs" />
+    <Compile Include="Migrations\201902240054265_AddNotification.Designer.cs">
+      <DependentUpon>201902240054265_AddNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Attendance.cs" />
     <Compile Include="Dtos\AttendanceDto.cs" />
     <Compile Include="Models\Following.cs" />
+    <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\NotificationType.cs" />
+    <Compile Include="Models\UserNotification.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -345,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902232156486_AddIsCanceledToEvent.resx">
       <DependentUpon>201902232156486_AddIsCanceledToEvent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902240054265_AddNotification.resx">
+      <DependentUpon>201902240054265_AddNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
