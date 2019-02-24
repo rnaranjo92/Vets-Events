@@ -110,12 +110,11 @@ namespace VetsEvents.Controllers
             }
 
             var VetEvent = new Event
-            {
-                EventOrganizerId = User.Identity.GetUserId(),
-                DateTime = viewModel.GetDateTime(),
-                EventTypeId = viewModel.EventType,
-                Venue = viewModel.Venue
-            };
+                (User.Identity.GetUserId(),
+                viewModel.GetDateTime(),
+                viewModel.Venue, 
+                viewModel.EventType);
+            
             _context.Events.Add(VetEvent);
             _context.SaveChanges();
 

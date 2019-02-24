@@ -17,23 +17,34 @@ namespace VetsEvents.Models
         [Required]
         public string EventOrganizerId { get; set; }
 
-        public EventType EventType { get; set; }
+        public EventType EventType { get; private set; }
 
         [Required]
-        public byte EventTypeId { get; set; }
+        public byte EventTypeId { get; private set; }
 
         [Required]
         [StringLength(255)]
-        public string Venue { get; set; }
+        public string Venue { get; private set; }
 
         [Required]
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; private set; }
 
         public ICollection<Attendance> Attendances { get; private set; }
 
         public Event()
         {
             Attendances = new Collection<Attendance>();
+        }
+
+        public Event(string eventOrganizerId,DateTime dateTime, string venue, byte eventTypeId)
+        {
+            if (eventOrganizerId == null)
+                throw new ArgumentNullException();
+
+            EventOrganizerId = eventOrganizerId;
+            DateTime = dateTime;
+            Venue = venue;
+            EventTypeId = eventTypeId;
         }
 
         public void Cancel()

@@ -8,9 +8,7 @@ namespace VetsEvents.Models
         public int Id { get; private set; }
         public DateTime DateTime { get; private set; }
         public NotificationType Type { get; private set; }
-
         public DateTime? OriginalDateTime { get; private set; }
-
         public string OriginalVenue { get; private set; }
 
         [Required]
