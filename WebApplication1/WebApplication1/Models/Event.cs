@@ -15,7 +15,7 @@ namespace VetsEvents.Models
         public ApplicationUser EventOrganizer { get; set; }
 
         [Required]
-        public string EventOrganizerId { get; set; }
+        public string EventOrganizerId { get; private set; }
 
         public EventType EventType { get; private set; }
 

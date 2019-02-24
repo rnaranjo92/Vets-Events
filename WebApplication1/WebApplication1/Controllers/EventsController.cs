@@ -114,7 +114,7 @@ namespace VetsEvents.Controllers
                 viewModel.GetDateTime(),
                 viewModel.Venue, 
                 viewModel.EventType);
-            
+
             _context.Events.Add(VetEvent);
             _context.SaveChanges();
 
