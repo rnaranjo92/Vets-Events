@@ -133,10 +133,7 @@ textarea {
     background-color:#e6163d;
     color:#f9fafc
 }
-ul, ol, {
-    margin-top: 55px;
-    margin-bottom: 10px;
-}
+
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     color: #fff;
     background-color: #1b3fa2;
@@ -211,7 +208,23 @@ ul, ol, {
 .label{
     color:black;
 }
-
+.popover-notifications .popover-content{
+    padding:0;
+}
+.popover-notifications ul.notifications {
+    list-style: none;
+    padding-left: 0;
+}
+.popover-notifications ul.notifications > li{
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+.popover-notifications ul.notifications > li:last-child {
+    border-bottom: none;
+}
+    .popover-notifications ul.notifications .highlight {
+        font-weight: bold;
+    }
 
 
 
