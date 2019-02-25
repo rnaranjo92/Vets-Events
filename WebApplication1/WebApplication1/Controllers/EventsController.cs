@@ -132,8 +132,7 @@ namespace VetsEvents.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            var VetEvent = _context.Events.Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
-
+            var VetEvent = _context.Events.Include(e => e.Attendances.Select(a => a.Attendee)).Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
 
             VetEvent.Update(viewModel.GetDateTime(), viewModel.Venue, viewModel.EventType);
 

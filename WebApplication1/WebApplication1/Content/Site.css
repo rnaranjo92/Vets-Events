@@ -40,6 +40,7 @@ textarea {
 }
 .voffset5 {
     margin-top: 45px;
+    padding-bottom: 30px
 }
 /*Bootstrap Overrides*/
 .btn-primary {
@@ -122,13 +123,41 @@ textarea {
     padding-top: 17px;
     padding-bottom: 15px;
 }
-ul, ol {
+.navbar-inverse .notifications{
+    position:relative;
+}
+.navbar-inverse .notifications .badge {
+    position:absolute;
+    top:8px;
+    right:0;
+    background-color:#e6163d;
+    color:#f9fafc
+}
+ul, ol, {
     margin-top: 55px;
     margin-bottom: 10px;
 }
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     color: #fff;
     background-color: #1b3fa2;
+}
+.popover-title {
+    padding: 3px 3px;
+    background-size: auto;
+    margin: 0;
+    font-size: 14px;
+    background-color: #2251d4;
+    border-bottom: 1px solid #ebebeb;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+    font-family: Patua One, Helvetica, Arial, sans-serif;
+    text-align:center;
+}
+.popover-content {
+    background: center center no-repeat;
+    margin-bottom:20px;
+    color: black;
+    text-anchor:start;
 }
 /*PAGE-LEVEL STYLES*/
 .vetevents{
@@ -182,6 +211,7 @@ ul, ol {
 .label{
     color:black;
 }
+
 
 
 
