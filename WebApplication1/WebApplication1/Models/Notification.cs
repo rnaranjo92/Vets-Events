@@ -19,7 +19,7 @@ namespace VetsEvents.Models
 
         }
 
-        public Notification(Event @event,NotificationType type)
+        private Notification(NotificationType type , Event @event)
         {
             if (@event == null)
                 throw new ArgumentNullException("@event");
@@ -31,21 +31,21 @@ namespace VetsEvents.Models
 
         public static Notification EventCreated(Event @event)
         {
-            return new Notification(@event, NotificationType.EventCreated);
+            return new Notification(NotificationType.EventCreated, @event);
         }
 
-        public static Notification EventUpdated(Event @event,DateTime dateTime, string Venue)
+        public static Notification EventUpdated(Event @event,DateTime originalDateTime, string originalVenue)
         {
-            var notification = new Notification(@event, NotificationType.EventUpdated);
-            notification.OriginalDateTime = dateTime;
-            notification.OriginalVenue = Venue;
+            var notification = new Notification(NotificationType.EventUpdated, @event);
+            notification.OriginalDateTime = originalDateTime;
+            notification.OriginalVenue = originalVenue;
 
             return notification;
         }
 
         public static Notification EventCanceled(Event @event)
         {
-            return new Notification(@event, NotificationType.EventCanceled);
+            return new Notification(NotificationType.EventCanceled,@event);
         }
 
     }

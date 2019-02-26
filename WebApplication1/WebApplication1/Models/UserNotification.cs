@@ -16,7 +16,7 @@ namespace VetsEvents.Models
 
         public ApplicationUser User { get; private set; }
 
-        public Notification Notification { get; set; }
+        public Notification Notification { get; private set; }
 
         public bool IsRead { get; private set; }
 

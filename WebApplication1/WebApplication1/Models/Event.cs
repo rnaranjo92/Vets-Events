@@ -15,19 +15,19 @@ namespace VetsEvents.Models
         public ApplicationUser EventOrganizer { get; set; }
 
         [Required]
-        public string EventOrganizerId { get; private set; }
+        public string EventOrganizerId { get; set; }
 
-        public EventType EventType { get; private set; }
+        public EventType EventType { get; set; }
 
         [Required]
-        public byte EventTypeId { get; private set; }
+        public byte EventTypeId { get;  set; }
 
         [Required]
         [StringLength(255)]
-        public string Venue { get; private set; }
+        public string Venue { get; set; }
 
         [Required]
-        public DateTime DateTime { get; private set; }
+        public DateTime DateTime { get; set; }
 
         public ICollection<Attendance> Attendances { get; private set; }
 
@@ -36,17 +36,7 @@ namespace VetsEvents.Models
             Attendances = new Collection<Attendance>();
         }
 
-        public Event(string eventOrganizerId,DateTime dateTime, string venue, byte eventTypeId)
-        {
-            if (eventOrganizerId == null)
-                throw new ArgumentNullException();
-
-            EventOrganizerId = eventOrganizerId;
-            DateTime = dateTime;
-            Venue = venue;
-            EventTypeId = eventTypeId;
-        }
-
+        
         public void Cancel()
         {
             IsCanceled = true;
@@ -62,7 +52,7 @@ namespace VetsEvents.Models
 
         public void Update(DateTime dateTime, string venue, byte eventType)
         {
-            var notification = Notification.EventUpdated(this, dateTime, venue);
+            var notification = Notification.EventUpdated(this, DateTime, Venue);
 
             Venue = venue;
             DateTime = dateTime;

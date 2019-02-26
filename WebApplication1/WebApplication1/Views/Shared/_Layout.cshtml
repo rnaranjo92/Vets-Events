@@ -41,33 +41,34 @@
     <script type="text/x-template" id="notifications-template">
         <ul class="notifications">
             <%
-            _.each(notifications, function(notification){
+                _.each(notifications, function(notification){
+                    if (notification.type == 1) { %>
+                        <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has canceled the event at <%= notification.event.venue %> at <%= moment(notification.event.dateTime).format("D MMM HH:mm") %>.</li>
+                    <% } 
+                        
+                    else if(notification.type == 2) {
+                        var changes = [],
+                            originalValues = [],
+                            newValues = [];
 
-            if (notification.type == 1){%>
-            <li><span class="highlight"><%=notification.event.eventOrganizer.name %></span> has canceled the event at <%= notification.event.venue %> at <%= moment(notification.event.dateTime).format("D MMM HH:mm") %></li>
-            <%}
-            else if (notification.type == 2)
-            {
-            var changes = [],
-            originalValues = [],
-            newValues = [];
-
-            if (notification.originalVenue != notification.event.venue){
-            changes.push('venue');
-            originalValues.push(notification.originalVenue);
-            newValues.push(notification.event.venue);
-            }
-            if (notification.originalDatetime != notification.event.dateTime){
-            changes.push('date/time');
-            originalValues.push(moment(notification.originalDateTime).format("D MMM HH:mm"));
-            newValues.push(moment(notification.event.dateTime).format("D MMM HH:mm"))
-            }
+                        if(notification.originalVenue != notification.event.venue) {
+                            changes.push('venue');
+                            originalValues.push(notification.originalVenue);
+                            newValues.push(notification.event.venue);
+                        }
+                    
+                        if(notification.originalDateTime != notification.event.dateTime) {
+                            changes.push('date/time');
+                            originalValues.push(moment(notification.originalDateTime).format("D MMM YYYY HH:mm"));
+                            newValues.push(moment(notification.event.dateTime).format("D MMM YYYY HH:mm"));
+                        }
+                     
+                    %>
+                        <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has changed the <%= changes.join(' and ') %> of the event from <%= originalValues.join('/') %> to <%= newValues.join('/') %></li>
+                <%
+                }
+            })
             %>
-            <li><span class="highlight"><%= notification.event.eventOrganizer.name%></span> has changed the <%= changes.join(' and ') %> of the event from <%= originalValues.join('/') %> to <%= newValues.join('/') %></li>
-            <%
-            }
-          })
-        %>
         </ul>
     </script>
 
@@ -80,7 +81,7 @@
                 $(".js-notifications-count")
                     .text(notifications.length)
                     .removeClass("hide")
-                    .addClass("animated bounce");
+                    .addClass("animated bounceInDown");
 
                 $(".notifications").popover({
                     html: true,
@@ -100,8 +101,8 @@
                                 .addClass("hide");
                         });
                 });
+
             });
-            
         });
     </script>
 </body>

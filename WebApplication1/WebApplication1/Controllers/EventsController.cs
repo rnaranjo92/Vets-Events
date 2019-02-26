@@ -110,10 +110,12 @@ namespace VetsEvents.Controllers
             }
 
             var VetEvent = new Event
-                (User.Identity.GetUserId(),
-                viewModel.GetDateTime(),
-                viewModel.Venue, 
-                viewModel.EventType);
+            {
+                EventOrganizerId = User.Identity.GetUserId(),
+                DateTime = viewModel.GetDateTime(),
+                EventTypeId = viewModel.EventType,
+                Venue = viewModel.Venue
+            };
 
             _context.Events.Add(VetEvent);
             _context.SaveChanges();
@@ -132,7 +134,9 @@ namespace VetsEvents.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            var VetEvent = _context.Events.Include(e => e.Attendances.Select(a => a.Attendee)).Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
+            var VetEvent = _context.Events
+                .Include(e => e.Attendances.Select(a => a.Attendee))
+                .Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
 
             VetEvent.Update(viewModel.GetDateTime(), viewModel.Venue, viewModel.EventType);
 
