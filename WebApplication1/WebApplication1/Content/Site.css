@@ -11,7 +11,6 @@
     padding-left: 15px;
     padding-right: 15px;
 }
-
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -26,8 +25,9 @@ textarea {
     max-width: 280px;
 }
 
-.voffset{
-    margin-top :2px;
+
+.voffset {
+    margin-top: 2px;
 }
 .voffset2{
     margin-top: 5px;
@@ -40,7 +40,6 @@ textarea {
 }
 .voffset5 {
     margin-top: 45px;
-    padding-bottom: 30px
 }
 /*Bootstrap Overrides*/
 .btn-primary {
@@ -157,12 +156,14 @@ textarea {
     text-anchor:start;
 }
 /*PAGE-LEVEL STYLES*/
-.vetevents{
-    list-style:none
+.vetevents {
+    list-style: none;
 }
 .vetevents> li{
     position:relative;
     margin-bottom:30px;
+   
+
 }
 .vetevents > li .details{
     position: absolute;
@@ -225,6 +226,13 @@ textarea {
     .popover-notifications ul.notifications .highlight {
         font-weight: bold;
     }
+#searchEvents {
+    width: 300px;
+}
+#searchTerm {
+    font-style: italic;
+    font-size: 10px;
+}
 
 
 

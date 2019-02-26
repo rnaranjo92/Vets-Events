@@ -70,6 +70,11 @@ namespace VetsEvents.Controllers
             };
             return View("Events",viewModel);
         }
+        [HttpPost]
+        public ActionResult Search(EventsViewModel viewModel)
+        {
+            return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
+        }
 
         [Authorize]
         public ActionResult Create()

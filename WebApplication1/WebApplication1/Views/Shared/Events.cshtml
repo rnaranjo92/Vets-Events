@@ -3,6 +3,17 @@
     ViewBag.Title = Model.Title;
 }
 <h2 class="voffset5">@Model.Title</h2>
+@using (Html.BeginForm("Search", "Events"))
+{
+    <div class="form-group">
+        <div id="searchEvents" class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search by organizer,event.." })
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+    </div>
+}
 <ul class="vetevents">
     @foreach (var vetEvent in Model.UpcomingEvents)
     {
@@ -19,7 +30,7 @@
             <span class="organizer">
                 @vetEvent.EventOrganizer.Name
 
-                @if(vetEvent.IsCanceled)
+                @if (vetEvent.IsCanceled)
                 {
                     <span class="label label-warning">Cancelled</span>
                 }
@@ -38,8 +49,8 @@
                 }
         </div>
     </li>
-        
-    }
+
+        }
 </ul>
 @section scripts {
     <script>

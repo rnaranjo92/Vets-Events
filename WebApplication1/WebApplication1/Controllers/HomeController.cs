@@ -15,18 +15,28 @@ namespace VetsEvents.Controllers
         {
             _context = new ApplicationDbContext();
         }
-        public ActionResult Index()
+        public ActionResult Index(string query = null)
         {
             var upcomingEvents = _context.Events
                 .Include(c => c.EventOrganizer)
                 .Include(c=>c.EventType)
                 .Where(g => g.DateTime > DateTime.Now && !g.IsCanceled);
 
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                upcomingEvents = upcomingEvents
+                    .Where(g =>
+                    g.EventOrganizer.Name.Contains(query) ||
+                    g.EventType.Name.Contains(query) ||
+                    g.Venue.Contains(query));
+            }
+
             var viewModel = new EventsViewModel
             {
                 UpcomingEvents = upcomingEvents,
                 IsAuthenticated = User.Identity.IsAuthenticated,
-                Title = "Upcoming events"
+                Title = "Upcoming events",
+                SearchTerm = query
             };
 
 

@@ -8,5 +8,6 @@ namespace VetsEvents.ViewModels
         public IEnumerable<Event> UpcomingEvents { get; set; }
         public bool IsAuthenticated { get; set; }
         public string Title { get; set; }
+        public string SearchTerm { get; set; }
     }
 }
