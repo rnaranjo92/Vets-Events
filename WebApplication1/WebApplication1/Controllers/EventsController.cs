@@ -149,5 +149,26 @@ namespace VetsEvents.Controllers
 
             return RedirectToAction("Mine", "Events");
         }
+
+        [Authorize]
+        public ActionResult Details(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var @event = _context.Events.Include(e=>e.EventOrganizer).Include(e=>e.EventType).Single(e => e.Id == id);
+
+            if (@event == null)
+                throw new ArgumentNullException();
+
+            var viewModel = new DetailsViewModel
+            {
+                IsFollowing = _context.Followings.Any(f => f.FolloweeId == @event.EventOrganizerId && f.FollowerId == userId),
+                IsGoing = _context.Attendance.Any(a => a.EventId == @event.Id && a.AttendeeId == userId),
+                Venue = @event.Venue,
+                DateTime = @event.DateTime,
+                EventOrganizer = @event.EventOrganizer.Name
+            };
+
+            return View(viewModel);
+        }
     }
 }

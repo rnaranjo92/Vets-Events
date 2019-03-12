@@ -28,7 +28,10 @@
         </div>
         <div class="details">
             <span class="organizer">
-                @vetEvent.EventOrganizer.Name
+
+                <a href="@Url.Action("Details","Events", new { id = vetEvent.Id})">
+                    @vetEvent.EventOrganizer.Name
+                </a>
 
                 @if (vetEvent.IsCanceled)
                 {

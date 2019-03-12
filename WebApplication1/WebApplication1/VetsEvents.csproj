@@ -254,6 +254,7 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventType.cs" />
+    <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\EventsViewModel.cs" />
     <Compile Include="ViewModels\FollowViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -326,6 +327,7 @@
     <Content Include="Views\Events\EventForm.cshtml" />
     <Content Include="Views\Events\Following.cshtml" />
     <Content Include="Views\Events\Mine.cshtml" />
+    <Content Include="Views\Events\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
