@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -30,13 +31,22 @@ namespace VetsEvents.Controllers
                     g.EventType.Name.Contains(query) ||
                     g.Venue.Contains(query));
             }
+            var userId = User.Identity.GetUserId();
+
+            var attendances = _context.Attendance
+                .Where(a => a.AttendeeId == userId && a.Event.DateTime > DateTime.Now)
+                .ToList()
+                .ToLookup(a => a.EventId);
+
+
 
             var viewModel = new EventsViewModel
             {
                 UpcomingEvents = upcomingEvents,
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Upcoming events",
-                SearchTerm = query
+                SearchTerm = query,
+                Attendances = attendances
             };
 
 

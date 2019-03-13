@@ -48,7 +48,13 @@
             </span>
                 @if (Model.IsAuthenticated && !vetEvent.IsCanceled)
                 {
-                    <button data-event-id="@vetEvent.Id" class="btn btn-default btn-sm pull-right js-toggle-attendance">Going?</button>
+                    <button 
+                            data-event-id="@vetEvent.Id" 
+                            class="btn 
+                            @(Model.Attendances.Contains(vetEvent.Id) ? "btn-info" : "btn-default") 
+                            btn-sm pull-right js-toggle-attendance">
+                        Going?
+                    </button>
                 }
         </div>
     </li>
@@ -57,20 +63,36 @@
 </ul>
 @section scripts {
     <script>
-        $(document).ready(function () {
-            $(".js-toggle-attendance").click(function (e) {
-                var button = $(e.target)
-                $.post("/api/attendances", { eventId: button.attr("data-event-id") })
-                    .done(function () {
-                        button.removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going!");
+        $(document).ready(function() {
+            $(".js-toggle-attendance").click(function(e) {
+                var button = $(e.target);
+                if (button.hasClass("btn-default")) {
+                    $.post("/api/attendances", { eventId: button.attr("data-event-id") })
+                        .done(function () {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        })
+                        .fail(function () {
+                            alert("Something failed!");
+                        });
+                } else {
+                    $.ajax({
+                        url: "/api/attendances/" + button.attr("data-event-id"),
+                        method: "DELETE"
                     })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
+                        .done(function () {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going?");
+                        })
+                        .fail(function () {
+                            alert("Something failed");
+                        });
+                }
             });
-
             $(".js-toggle-follower").click(function (e) {
                 var button = $(e.target)
                 $.post("/api/followings", { followeeId: button.attr("data-user-id") })

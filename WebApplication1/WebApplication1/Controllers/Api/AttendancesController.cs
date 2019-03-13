@@ -35,5 +35,20 @@ namespace VetsEvents.Controllers.Api
 
             return Ok();
         }
+        [HttpDelete]
+        public IHttpActionResult DeleteAttendance(int id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var attendance = _context.Attendance.SingleOrDefault(a => a.AttendeeId == userId && a.EventId == id);
+            if (attendance == null)
+                return BadRequest("Attendance does not exits");
+
+            _context.Attendance.Remove(attendance);
+            _context.SaveChanges();
+
+
+            return Ok(id);
+        }
     }
 }

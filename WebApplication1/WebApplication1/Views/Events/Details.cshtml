@@ -4,29 +4,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <br />
-@Model.EventOrganizer
-@if (User.Identity.IsAuthenticated)
-{
-    if (Model.IsFollowing)
+<h2>
+    @Model.EventOrganizer
+    @if (User.Identity.IsAuthenticated)
     {
-        <button class="btn btn-primary">Following</button>
+        if (Model.IsFollowing)
+        {
+            <button class="btn btn-info">Following</button>
+        }
+        else
+        {
+            <button class="btn btn-info">Follow</button>
+        }
     }
-    else
-    {
-        <button class="btn btn-primary">Follow</button>
-    }
-}
-<br />
-@Model.Venue
-@Model.DateTime.ToShortDateString()
+</h2>
+<p>
+    Event Location : @Model.Venue <br />
+    Time and Date : @Model.DateTime.ToShortDateString() @Model.DateTime.ToShortTimeString()
+</p>
+    
 
-@if (User.Identity.IsAuthenticated)
-{
-    if (Model.IsGoing)
+    @if (User.Identity.IsAuthenticated)
     {
+        if (Model.IsGoing)
+        {
         <p>You are going to this event</p>
-    }
-    else
-    {
     }
 }

@@ -62,8 +62,14 @@ namespace VetsEvents.Controllers
                 .Include(a =>a.EventType)
                 .ToList();
 
+            var attendances = _context.Attendance
+               .Where(a => a.AttendeeId == userId && a.Event.DateTime > DateTime.Now)
+               .ToList()
+               .ToLookup(a => a.EventId);
+
             var viewModel = new EventsViewModel
             {
+                Attendances = attendances,
                 UpcomingEvents = events,
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Events I'm attending"
@@ -150,25 +156,32 @@ namespace VetsEvents.Controllers
             return RedirectToAction("Mine", "Events");
         }
 
-        [Authorize]
         public ActionResult Details(int id)
         {
-            var userId = User.Identity.GetUserId();
             var @event = _context.Events.Include(e=>e.EventOrganizer).Include(e=>e.EventType).Single(e => e.Id == id);
 
             if (@event == null)
-                throw new ArgumentNullException();
+                return HttpNotFound();
 
             var viewModel = new DetailsViewModel
             {
-                IsFollowing = _context.Followings.Any(f => f.FolloweeId == @event.EventOrganizerId && f.FollowerId == userId),
-                IsGoing = _context.Attendance.Any(a => a.EventId == @event.Id && a.AttendeeId == userId),
                 Venue = @event.Venue,
                 DateTime = @event.DateTime,
                 EventOrganizer = @event.EventOrganizer.Name
             };
 
-            return View(viewModel);
+            if(User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+
+                viewModel.IsFollowing  = _context.Followings
+                    .Any(f => f.FolloweeId == @event.EventOrganizerId && f.FollowerId == userId);
+
+                viewModel.IsGoing = _context.Attendance
+                    .Any(a => a.EventId == @event.Id && a.AttendeeId == userId);
+            }
+
+            return View("Details",viewModel);
         }
     }
 }
