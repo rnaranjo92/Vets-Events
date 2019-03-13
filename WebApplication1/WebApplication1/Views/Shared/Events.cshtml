@@ -53,7 +53,8 @@
                             class="btn 
                             @(Model.Attendances.Contains(vetEvent.Id) ? "btn-info" : "btn-default") 
                             btn-sm pull-right js-toggle-attendance">
-                        Going?
+                            @(Model.Attendances.Contains(vetEvent.Id) ? "Going" : "Going?") 
+
                     </button>
                 }
         </div>
@@ -64,35 +65,8 @@
 @section scripts {
     <script>
         $(document).ready(function() {
-            $(".js-toggle-attendance").click(function(e) {
-                var button = $(e.target);
-                if (button.hasClass("btn-default")) {
-                    $.post("/api/attendances", { eventId: button.attr("data-event-id") })
-                        .done(function () {
-                            button
-                                .removeClass("btn-default")
-                                .addClass("btn-info")
-                                .text("Going");
-                        })
-                        .fail(function () {
-                            alert("Something failed!");
-                        });
-                } else {
-                    $.ajax({
-                        url: "/api/attendances/" + button.attr("data-event-id"),
-                        method: "DELETE"
-                    })
-                        .done(function () {
-                            button
-                                .removeClass("btn-info")
-                                .addClass("btn-default")
-                                .text("Going?");
-                        })
-                        .fail(function () {
-                            alert("Something failed");
-                        });
-                }
-            });
+            EventsController.init();
+
             $(".js-toggle-follower").click(function (e) {
                 var button = $(e.target)
                 $.post("/api/followings", { followeeId: button.attr("data-user-id") })

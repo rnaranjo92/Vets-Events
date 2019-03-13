@@ -22,7 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Add an Event","Create", "Events")</li>
+                    <li>@Html.ActionLink("Add an Event", "Create", "Events")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -37,36 +37,37 @@
     </div>
 
     @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/app")
     @RenderSection("scripts", required: false)
     <script type="text/x-template" id="notifications-template">
         <ul class="notifications">
             <%
-                _.each(notifications, function(notification){
-                    if (notification.type == 1) { %>
-                        <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has canceled the event at <%= notification.event.venue %> at <%= moment(notification.event.dateTime).format("D MMM HH:mm") %>.</li>
-                    <% } 
-                        
-                    else if(notification.type == 2) {
-                        var changes = [],
-                            originalValues = [],
-                            newValues = [];
+            _.each(notifications, function(notification){
+            if (notification.type == 1) { %>
+            <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has canceled the event at <%= notification.event.venue %> at <%= moment(notification.event.dateTime).format("D MMM HH:mm") %>.</li>
+            <% }
 
-                        if(notification.originalVenue != notification.event.venue) {
-                            changes.push('venue');
-                            originalValues.push(notification.originalVenue);
-                            newValues.push(notification.event.venue);
-                        }
-                    
-                        if(notification.originalDateTime != notification.event.dateTime) {
-                            changes.push('date/time');
-                            originalValues.push(moment(notification.originalDateTime).format("D MMM YYYY HH:mm"));
-                            newValues.push(moment(notification.event.dateTime).format("D MMM YYYY HH:mm"));
-                        }
-                     
-                    %>
-                        <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has changed the <%= changes.join(' and ') %> of the event from <%= originalValues.join('/') %> to <%= newValues.join('/') %></li>
-                <%
-                }
+            else if(notification.type == 2) {
+            var changes = [],
+            originalValues = [],
+            newValues = [];
+
+            if(notification.originalVenue != notification.event.venue) {
+            changes.push('venue');
+            originalValues.push(notification.originalVenue);
+            newValues.push(notification.event.venue);
+            }
+
+            if(notification.originalDateTime != notification.event.dateTime) {
+            changes.push('date/time');
+            originalValues.push(moment(notification.originalDateTime).format("D MMM YYYY HH:mm"));
+            newValues.push(moment(notification.event.dateTime).format("D MMM YYYY HH:mm"));
+            }
+
+            %>
+            <li><span class="highlight"><%= notification.event.eventOrganizer.name %></span> has changed the <%= changes.join(' and ') %> of the event from <%= originalValues.join('/') %> to <%= newValues.join('/') %></li>
+            <%
+            }
             })
             %>
         </ul>
