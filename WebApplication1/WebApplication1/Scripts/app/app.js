@@ -1,39 +1,55 @@
-﻿var EventsController = function () {
+﻿
+var AttendanceService = function () {
+    var createAttendance = function (eventId, done, fail) {
+        $.post("/api/attendances", { eventId: eventId })
+            .done(done)
+            .fail(fail);
+    };
+    var deleteAttendance = function (eventId, done, fail) {
+        $.ajax({
+            url: "/api/attendances/" + eventId,
+            method: "DELETE"
+        })
+            .done(done)
+            .fail(fail);
+    };
+
+    return {
+        createAttendance: createAttendance,
+        deleteAttendance: deleteAttendance
+    }
+}();
+
+
+
+
+var EventsController = function (attendanceService) {
+    var button;
+
     var init = function () {
         $(".js-toggle-attendance").click(toggleAttendance); 
     };
     var toggleAttendance = function (e) {
-        var button = $(e.target);
-        if (button.hasClass("btn-default")) {
-            $.post("/api/attendances", { eventId: button.attr("data-event-id") })
-                .done(function () {
-                    button
-                        .removeClass("btn-default")
-                        .addClass("btn-info")
-                        .text("Going");
-                })
-                .fail(function () {
-                    alert("Something failed!");
-                });
-        } else {
-            $.ajax({
-                url: "/api/attendances/" + button.attr("data-event-id"),
-                method: "DELETE"
-            })
-                .done(function () {
-                    button
-                        .removeClass("btn-info")
-                        .addClass("btn-default")
-                        .text("Going?");
-                })
-                .fail(function () {
-                    alert("Something failed");
-                });
-        }
-    };
+        button = $(e.target);
 
+        var eventId = button.attr("data-event-id");
+
+        if (button.hasClass("btn-default")) 
+            attendanceService.createAttendance(eventId, done, fail);
+         else 
+            attendanceService.deleteAttendance(eventId, done, fail);
+    };
+    
+
+    var done = function () {
+        var text = (button.text() === "Going") ? "Going?" : "Going";
+        button.toggleClass("btn-info").toggleClass("btn-default").text(text);
+    };
+    var fail = function () {
+        alert("Something failed");
+    };
     return {
-        init:init
-    }
-}();
+        init: init
+    };
+}(AttendanceService);
 

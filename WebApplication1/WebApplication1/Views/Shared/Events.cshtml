@@ -14,7 +14,7 @@
         </div>
     </div>
 }
-<ul class="vetevents">
+<ul id="events" class="vetevents">
     @foreach (var vetEvent in Model.UpcomingEvents)
     {
     <li>
@@ -65,7 +65,7 @@
 @section scripts {
     <script>
         $(document).ready(function() {
-            EventsController.init();
+            EventsController.init("#events");
 
             $(".js-toggle-follower").click(function (e) {
                 var button = $(e.target)

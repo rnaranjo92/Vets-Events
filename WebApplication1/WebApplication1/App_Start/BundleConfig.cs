@@ -8,15 +8,17 @@ namespace VetsEvents
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
-                "~/Scripts/app/app.js"
+                "~/Scripts/app/app.js",
+                "~/Scripts/controller/eventsController.js",
+                "~/Scripts/services/attendanceServices.js"
+
                 ));
             bundles.Add(new ScriptBundle("~/bundles/lib").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/underscore-min.js",
                         "~/Scripts/moment.js",
                         "~/Scripts/bootstrap.js",
-                      "~/Scripts/bootbox.min.js",
-                      "~/Scripts/app.js"
+                      "~/Scripts/bootbox.min.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
