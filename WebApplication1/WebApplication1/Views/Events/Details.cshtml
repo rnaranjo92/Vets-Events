@@ -5,29 +5,60 @@
 }
 <br />
 <h2>
-    @Model.EventOrganizer
-    @if (User.Identity.IsAuthenticated)
-    {
-        if (Model.IsFollowing)
-        {
-            <button class="btn btn-info">Following</button>
-        }
-        else
-        {
-            <button class="btn btn-info">Follow</button>
-        }
-    }
+    @Model.EventOrganizer.Name
+    @if (Model.IsAuthenticated)
+                {
+                    <button data-user-id="@Model.EventOrganizer.Id" class="btn @(Model.Followings.Contains(Model.EventOrganizer.Id) ? "btn-info" : "btn-default") btn-sm  js-toggle-follower">
+                        @(Model.Followings.Contains(Model.EventOrganizer.Id) ? "Following" : "Follow")
+                    </button>
+                }
 </h2>
 <p>
     Event Location : @Model.Venue <br />
     Time and Date : @Model.DateTime.ToShortDateString() @Model.DateTime.ToShortTimeString()
 </p>
-    
 
-    @if (User.Identity.IsAuthenticated)
+
+@if (User.Identity.IsAuthenticated)
+{
+    if (Model.IsGoing)
     {
-        if (Model.IsGoing)
-        {
         <p>You are going to this event</p>
     }
 }
+@section scripts {
+    <script>
+        $(".js-toggle-follower").click(function (e) {
+            var button = $(e.target)
+            if (button.hasClass("btn-default")) {
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        button
+                            .removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Following")
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            } else {
+                $.ajax({
+                    url: "/api/followings/" + button.attr("data-user-id"),
+                    method: "DELETE"
+                })
+                    .done(function () {
+                        button
+                            .removeClass("btn-info")
+                            .addClass("btn-default")
+                            .text("Follow");
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            }
+        });
+    </script>
+    }
+
+
+    

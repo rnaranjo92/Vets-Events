@@ -38,7 +38,7 @@ namespace VetsEvents.Controllers
                 .ToList()
                 .ToLookup(a => a.EventId);
 
-
+            
 
             var viewModel = new EventsViewModel
             {
@@ -46,7 +46,7 @@ namespace VetsEvents.Controllers
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Upcoming events",
                 SearchTerm = query,
-                Attendances = attendances
+                Attendances = attendances,
             };
 
 

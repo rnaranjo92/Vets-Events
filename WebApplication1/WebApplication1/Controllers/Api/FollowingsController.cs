@@ -21,9 +21,7 @@ namespace VetsEvents.Api
             var userId = User.Identity.GetUserId();
 
             if (_context.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId))
-            {
                 return BadRequest("Following already exists");
-            }
 
             var following = new Following()
             {
@@ -36,7 +34,20 @@ namespace VetsEvents.Api
 
             return Ok();
         }
+        [HttpDelete]
+        public IHttpActionResult UnFollow(string id)
+        {
+            var userId = User.Identity.GetUserId();
+            var followings = _context.Followings.SingleOrDefault(f=>f.FolloweeId == id && f.FollowerId == userId);
 
+            if (followings == null)
+                return BadRequest();
+
+            _context.Followings.Remove(followings);
+            _context.SaveChanges();
+
+            return Ok(id);
+        }
 
     }
 }

@@ -163,11 +163,16 @@ namespace VetsEvents.Controllers
             if (@event == null)
                 return HttpNotFound();
 
+            var followings = _context.Followings
+                .ToList()
+                .ToLookup(f => f.FolloweeId);
+
             var viewModel = new DetailsViewModel
             {
                 Venue = @event.Venue,
                 DateTime = @event.DateTime,
-                EventOrganizer = @event.EventOrganizer.Name
+                EventOrganizer = @event.EventOrganizer,
+                Followings = followings,
             };
 
             if(User.Identity.IsAuthenticated)
@@ -179,6 +184,8 @@ namespace VetsEvents.Controllers
 
                 viewModel.IsGoing = _context.Attendance
                     .Any(a => a.EventId == @event.Id && a.AttendeeId == userId);
+
+                viewModel.IsAuthenticated = true;
             }
 
             return View("Details",viewModel);

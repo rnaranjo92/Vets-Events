@@ -37,10 +37,7 @@
                 {
                     <span class="label label-warning">Cancelled</span>
                 }
-                @if (Model.IsAuthenticated)
-                {
-                    <button data-user-id="@vetEvent.EventOrganizerId" class="btn-link js-toggle-follower">Follow</button>
-                }
+                
 
             </span>
             <span class="eventtype">
@@ -54,7 +51,6 @@
                             @(Model.Attendances.Contains(vetEvent.Id) ? "btn-info" : "btn-default") 
                             btn-sm pull-right js-toggle-attendance">
                             @(Model.Attendances.Contains(vetEvent.Id) ? "Going" : "Going?") 
-
                     </button>
                 }
         </div>
@@ -67,16 +63,7 @@
         $(document).ready(function() {
             EventsController.init("#events");
 
-            $(".js-toggle-follower").click(function (e) {
-                var button = $(e.target)
-                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                    .done(function () {
-                        button.text("Following!")
-                    })
-                    .fail(function () {
-                        alert("Something failed!")
-                    })
-            });
+           
         });
     </script>
     }

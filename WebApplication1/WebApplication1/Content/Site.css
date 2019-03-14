@@ -81,7 +81,7 @@ textarea {
     display: inline-block;
     font-weight: normal;
     line-height: 1.42857143;
-    border: 1px solid transparent;
+    border: 1px solid #555;
     border-radius: 12px;
     border-radius: 8px;
 }
