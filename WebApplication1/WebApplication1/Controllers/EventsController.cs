@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
+using VetsEvents.Repository;
 using VetsEvents.ViewModels;
 
 namespace VetsEvents.Controllers
@@ -11,12 +12,15 @@ namespace VetsEvents.Controllers
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly AttendanceRepository _attendanceRepository;
+        private readonly EventRepository _eventRepository;
 
         public EventsController()
         {
             _context = new ApplicationDbContext();
+            _attendanceRepository = new AttendanceRepository(_context);
+            _eventRepository = new EventRepository(_context);
         }
-
 
 
         [Authorize]
@@ -50,32 +54,25 @@ namespace VetsEvents.Controllers
             return View(viewModel);
         }
 
+        
+
+       
+
         [Authorize]
         public ActionResult Attending()
         {
             var userId = User.Identity.GetUserId();
 
-            var events = _context.Attendance
-                .Where(a => a.AttendeeId == userId)
-                .Select(a=>a.Event)
-                .Include(a=>a.EventOrganizer)
-                .Include(a =>a.EventType)
-                .ToList();
-
-            var attendances = _context.Attendance
-               .Where(a => a.AttendeeId == userId && a.Event.DateTime > DateTime.Now)
-               .ToList()
-               .ToLookup(a => a.EventId);
-
             var viewModel = new EventsViewModel
             {
-                Attendances = attendances,
-                UpcomingEvents = events,
+                Attendances = _attendanceRepository.GetFutureAttendees(userId).ToLookup(a => a.EventId),
+                UpcomingEvents = _eventRepository.GetAllUserAttending(userId),
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Events I'm attending"
             };
             return View("Events",viewModel);
         }
+        
         [HttpPost]
         public ActionResult Search(EventsViewModel viewModel)
         {
@@ -143,11 +140,14 @@ namespace VetsEvents.Controllers
                 viewModel.EventTypes = _context.EventTypes.ToList();
                 return View("EventForm", viewModel);
             }
-            var userId = User.Identity.GetUserId();
 
-            var VetEvent = _context.Events
-                .Include(e => e.Attendances.Select(a => a.Attendee))
-                .Single(e => e.Id == viewModel.Id && e.EventOrganizerId == userId);
+            var VetEvent = _eventRepository.GetEventWithItsAttendees(viewModel.Id);
+
+            if (VetEvent == null)
+                throw new NullReferenceException();
+
+            if (VetEvent.EventOrganizerId != User.Identity.GetUserId())
+                return new HttpUnauthorizedResult();
 
             VetEvent.Update(viewModel.GetDateTime(), viewModel.Venue, viewModel.EventType);
 

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
+using VetsEvents.Repository;
 using VetsEvents.ViewModels;
 
 namespace VetsEvents.Controllers
@@ -11,10 +12,12 @@ namespace VetsEvents.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext _context;
+        private readonly AttendanceRepository _attendanceRepository;
 
         public HomeController()
         {
             _context = new ApplicationDbContext();
+            _attendanceRepository = new AttendanceRepository(_context);
         }
         public ActionResult Index(string query = null)
         {
@@ -33,20 +36,13 @@ namespace VetsEvents.Controllers
             }
             var userId = User.Identity.GetUserId();
 
-            var attendances = _context.Attendance
-                .Where(a => a.AttendeeId == userId && a.Event.DateTime > DateTime.Now)
-                .ToList()
-                .ToLookup(a => a.EventId);
-
-            
-
             var viewModel = new EventsViewModel
             {
                 UpcomingEvents = upcomingEvents,
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Upcoming events",
                 SearchTerm = query,
-                Attendances = attendances,
+                Attendances = _attendanceRepository.GetFutureAttendees(userId).ToLookup(a => a.EventId),
             };
 
 
