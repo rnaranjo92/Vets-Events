@@ -46,11 +46,11 @@
                 @if (Model.IsAuthenticated && !vetEvent.IsCanceled)
                 {
                     <button 
-                            data-event-id="@vetEvent.Id" 
-                            class="btn 
+                        data-event-id="@vetEvent.Id" 
+                        class="btn 
                             @(Model.Attendances.Contains(vetEvent.Id) ? "btn-info" : "btn-default") 
-                            btn-sm pull-right js-toggle-attendance">
-                            @(Model.Attendances.Contains(vetEvent.Id) ? "Going" : "Going?") 
+                            btn-sm js-toggle-attendance">
+                        @(!Model.Attendances.Contains(vetEvent.Id)? "Going?": "Going")
                     </button>
                 }
         </div>
@@ -62,7 +62,6 @@
     <script>
         $(document).ready(function() {
             EventsController.init("#events");
-
            
         });
     </script>

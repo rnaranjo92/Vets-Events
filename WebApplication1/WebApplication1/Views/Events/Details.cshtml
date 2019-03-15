@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <br />
-<h2>
+<h2 id="details">
     @Model.EventOrganizer.Name
     @if (Model.IsAuthenticated)
                 {
@@ -28,34 +28,8 @@
 }
 @section scripts {
     <script>
-        $(".js-toggle-follower").click(function (e) {
-            var button = $(e.target)
-            if (button.hasClass("btn-default")) {
-                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
-                    .done(function () {
-                        button
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Following")
-                    })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
-            } else {
-                $.ajax({
-                    url: "/api/followings/" + button.attr("data-user-id"),
-                    method: "DELETE"
-                })
-                    .done(function () {
-                        button
-                            .removeClass("btn-info")
-                            .addClass("btn-default")
-                            .text("Follow");
-                    })
-                    .fail(function () {
-                        alert("Something failed!");
-                    });
-            }
+        $(document).ready(function () {
+            followController.init();
         });
     </script>
     }

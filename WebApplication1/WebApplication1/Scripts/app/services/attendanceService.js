@@ -1,4 +1,5 @@
-﻿var AttendanceService = function () {
+﻿
+var AttendanceService = function () {
     var createAttendance = function (eventId, done, fail) {
         $.post("/api/attendances", { eventId: eventId })
             .done(done)
