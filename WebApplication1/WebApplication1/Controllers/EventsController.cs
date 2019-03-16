@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using VetsEvents.Models;
-using VetsEvents.Repository;
+using VetsEvents.Persistence;
 using VetsEvents.ViewModels;
 
 namespace VetsEvents.Controllers
@@ -12,26 +11,19 @@ namespace VetsEvents.Controllers
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly AttendanceRepository _attendanceRepository;
-        private readonly EventRepository _eventRepository;
+        private readonly UnitOfWork _unitOfWork;
 
         public EventsController()
         {
             _context = new ApplicationDbContext();
-            _attendanceRepository = new AttendanceRepository(_context);
-            _eventRepository = new EventRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
         }
 
 
         [Authorize]
         public ActionResult Mine()
         {
-            var userId = User.Identity.GetUserId();
-            var events = _context.Events
-                .Where(e => e.EventOrganizerId == userId && e.DateTime > DateTime.Now && !e.IsCanceled)
-                .Include(e=>e.EventType)
-                .ToList();
-
+            var events = _unitOfWork.Event.GetAllMyEvent(User.Identity.GetUserId());
 
             return View(events);
         }
@@ -39,22 +31,13 @@ namespace VetsEvents.Controllers
         [Authorize]
         public ActionResult Following()
         {
-            var userId = User.Identity.GetUserId();
-
-            var following = _context.Followings
-                .Where(f => f.FollowerId == userId)
-                .Select(f => f.Followee)
-                .ToList();
-
             var viewModel = new FollowViewModel
             {
-                FolloweeId = following
+                FolloweeId = _unitOfWork.Follow.GetAllUserIamFollowing(User.Identity.GetUserId())
             };
 
             return View(viewModel);
         }
-
-        
 
        
 
@@ -65,8 +48,8 @@ namespace VetsEvents.Controllers
 
             var viewModel = new EventsViewModel
             {
-                Attendances = _attendanceRepository.GetFutureAttendees(userId).ToLookup(a => a.EventId),
-                UpcomingEvents = _eventRepository.GetAllUserAttending(userId),
+                Attendances = _unitOfWork.Attendance.GetFutureAttendees(userId).ToLookup(a => a.EventId),
+                UpcomingEvents = _unitOfWork.Event.GetAllUserAttending(userId),
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Events I'm attending"
             };
@@ -84,7 +67,7 @@ namespace VetsEvents.Controllers
         {
             var viewModel = new EventFormViewModel
             {
-                EventTypes = _context.EventTypes.ToList(),
+                EventTypes = _unitOfWork.EventType.GetAllEventType(),
                 Title = "Add an Event"
             };
             return View("EventForm",viewModel);
@@ -92,12 +75,18 @@ namespace VetsEvents.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            var userId = User.Identity.GetUserId();
-            var vetEvents = _context.Events.Single(e => e.Id == id && e.EventOrganizerId == userId);
+            var vetEvents = _unitOfWork.Event.GetMyEvent(id, User.Identity.GetUserId());
+
+            if (vetEvents == null)
+                return HttpNotFound();
+
+            if (vetEvents.EventOrganizerId != User.Identity.GetUserId())
+                return new HttpUnauthorizedResult();
+
             var viewModel = new EventFormViewModel
             {
                 Id = vetEvents.Id,
-                EventTypes = _context.EventTypes.ToList(),
+                EventTypes = _unitOfWork.EventType.GetAllEventType(),
                 EventType = vetEvents.EventTypeId,
                 Venue = vetEvents.Venue,
                 Date = vetEvents.DateTime.ToString("d MMM yyyy"),
@@ -113,7 +102,7 @@ namespace VetsEvents.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.EventTypes = _context.EventTypes.ToList();
+                viewModel.EventTypes = _unitOfWork.EventType.GetAllEventType();
                 return View("EventForm", viewModel);
             }
 
@@ -124,9 +113,8 @@ namespace VetsEvents.Controllers
                 EventTypeId = viewModel.EventType,
                 Venue = viewModel.Venue
             };
-
-            _context.Events.Add(VetEvent);
-            _context.SaveChanges();
+            _unitOfWork.Event.Add(VetEvent);
+            _unitOfWork.Complete();
 
             return RedirectToAction("Mine", "Events");
         }
@@ -137,11 +125,11 @@ namespace VetsEvents.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.EventTypes = _context.EventTypes.ToList();
+                viewModel.EventTypes = _unitOfWork.EventType.GetAllEventType();
                 return View("EventForm", viewModel);
             }
 
-            var VetEvent = _eventRepository.GetEventWithItsAttendees(viewModel.Id);
+            var VetEvent = _unitOfWork.Event.GetEventWithItsAttendees(viewModel.Id);
 
             if (VetEvent == null)
                 throw new NullReferenceException();
@@ -151,21 +139,20 @@ namespace VetsEvents.Controllers
 
             VetEvent.Update(viewModel.GetDateTime(), viewModel.Venue, viewModel.EventType);
 
-            _context.SaveChanges();
+            _unitOfWork.Complete();
 
             return RedirectToAction("Mine", "Events");
         }
 
         public ActionResult Details(int id)
         {
-            var @event = _context.Events.Include(e=>e.EventOrganizer).Include(e=>e.EventType).Single(e => e.Id == id);
+            var @event = _unitOfWork.Event.GetEventDetails(id);
 
             if (@event == null)
                 return HttpNotFound();
 
-            var followings = _context.Followings
-                .ToList()
-                .ToLookup(f => f.FolloweeId);
+            var followings = _unitOfWork.Follow.GetAllFollowings().ToLookup(f => f.FolloweeId);
+
 
             var viewModel = new DetailsViewModel
             {
@@ -179,11 +166,11 @@ namespace VetsEvents.Controllers
             {
                 var userId = User.Identity.GetUserId();
 
-                viewModel.IsFollowing  = _context.Followings
-                    .Any(f => f.FolloweeId == @event.EventOrganizerId && f.FollowerId == userId);
+                viewModel.IsFollowing =
+                    _unitOfWork.Follow.CheckIfFollowing(@event, userId) !=null;
 
-                viewModel.IsGoing = _context.Attendance
-                    .Any(a => a.EventId == @event.Id && a.AttendeeId == userId);
+                viewModel.IsGoing =
+                    _unitOfWork.Attendance.CheckIfAttending(@event, @event.EventOrganizerId) != null;
 
                 viewModel.IsAuthenticated = true;
             }

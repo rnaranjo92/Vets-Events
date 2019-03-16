@@ -18,5 +18,11 @@ namespace VetsEvents.Repository
                .Where(a => a.AttendeeId == userId && a.Event.DateTime > DateTime.Now)
                .ToList();
         }
+
+        public bool CheckIfAttending(Event @event, string userId)
+        {
+            return _context.Attendance
+                    .Any(a => a.EventId == @event.Id && a.AttendeeId == userId);
+        }
     }
 }
