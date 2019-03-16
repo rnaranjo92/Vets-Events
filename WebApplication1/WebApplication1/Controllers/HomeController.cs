@@ -1,38 +1,27 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using VetsEvents.Models;
-using VetsEvents.Repository;
+using VetsEvents.Persistence;
 using VetsEvents.ViewModels;
 
 namespace VetsEvents.Controllers
 {
     public class HomeController : Controller
     {
-        private ApplicationDbContext _context;
-        private readonly AttendanceRepository _attendanceRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public HomeController()
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
-            _attendanceRepository = new AttendanceRepository(_context);
+            _unitOfWork = unitOfWork;
         }
         public ActionResult Index(string query = null)
         {
-            var upcomingEvents = _context.Events
-                .Include(c => c.EventOrganizer)
-                .Include(c=>c.EventType)
-                .Where(g => g.DateTime > DateTime.Now && !g.IsCanceled);
+            var upcomingEvents = _unitOfWork.Event.GetAllUpcomingEvent();
 
             if (!String.IsNullOrWhiteSpace(query))
             {
-                upcomingEvents = upcomingEvents
-                    .Where(g =>
-                    g.EventOrganizer.Name.Contains(query) ||
-                    g.EventType.Name.Contains(query) ||
-                    g.Venue.Contains(query));
+                upcomingEvents = _unitOfWork.Event.GetEventBySearch(upcomingEvents, query);
             }
             var userId = User.Identity.GetUserId();
 
@@ -42,7 +31,7 @@ namespace VetsEvents.Controllers
                 IsAuthenticated = User.Identity.IsAuthenticated,
                 Title = "Upcoming events",
                 SearchTerm = query,
-                Attendances = _attendanceRepository.GetFutureAttendees(userId).ToLookup(a => a.EventId),
+                Attendances = _unitOfWork.Attendance.GetFutureAttendees(userId).ToLookup(a => a.EventId),
             };
 
 

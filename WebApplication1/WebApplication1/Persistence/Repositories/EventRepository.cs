@@ -6,7 +6,7 @@ using VetsEvents.Models;
 
 namespace VetsEvents.Repository
 {
-    public class EventRepository
+    public class EventRepository : IEventRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -22,6 +22,21 @@ namespace VetsEvents.Repository
                 .Single(e => e.Id == eventId);
         }
 
+        public IQueryable<Event> GetAllUpcomingEvent()
+        {
+            return _context.Events
+                .Include(c => c.EventOrganizer)
+                .Include(c => c.EventType)
+                .Where(g => g.DateTime > DateTime.Now && !g.IsCanceled);
+        }
+
+        public IQueryable<Event> GetEventBySearch(IQueryable<Event> upcomingEvents, string query)
+        {
+            return upcomingEvents.Where(g =>
+                g.EventOrganizer.Name.Contains(query) ||
+                g.EventType.Name.Contains(query) ||
+                g.Venue.Contains(query));
+        }
 
         public IEnumerable<Event> GetAllUserAttending(string userId)
         {
@@ -53,5 +68,7 @@ namespace VetsEvents.Repository
         {
             _context.Events.Add(@event);
         }
+
+        
     }
 }

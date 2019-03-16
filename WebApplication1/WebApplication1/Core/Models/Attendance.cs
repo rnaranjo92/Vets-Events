@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace VetsEvents.Models
+﻿namespace VetsEvents.Models
 {
     public class Attendance
     {
@@ -9,12 +6,8 @@ namespace VetsEvents.Models
 
         public ApplicationUser Attendee { get; set; }
 
-        [Key]
-        [Column(Order=1)]
         public int EventId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
         public string AttendeeId { get; set; }
     }
 }

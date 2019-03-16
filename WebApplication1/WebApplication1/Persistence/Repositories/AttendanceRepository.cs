@@ -5,7 +5,7 @@ using VetsEvents.Models;
 
 namespace VetsEvents.Repository
 {
-    public class AttendanceRepository
+    public class AttendanceRepository : IAttendanceRepository
     {
         private readonly ApplicationDbContext _context;
         public AttendanceRepository(ApplicationDbContext context)

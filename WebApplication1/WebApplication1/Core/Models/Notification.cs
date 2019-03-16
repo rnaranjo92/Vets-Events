@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace VetsEvents.Models
 {
@@ -11,7 +10,6 @@ namespace VetsEvents.Models
         public DateTime? OriginalDateTime { get; private set; }
         public string OriginalVenue { get; private set; }
 
-        [Required]
         public Event Event { get; private set; }
 
         protected Notification()

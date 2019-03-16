@@ -4,7 +4,7 @@ using VetsEvents.Models;
 
 namespace VetsEvents.Repository
 {
-    public class EventTypeRepository
+    public class EventTypeRepository : IEventTypeRepository
     {
         private readonly ApplicationDbContext _context;
 

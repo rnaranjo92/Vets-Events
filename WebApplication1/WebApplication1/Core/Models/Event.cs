@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace VetsEvents.Models
@@ -14,19 +13,14 @@ namespace VetsEvents.Models
 
         public ApplicationUser EventOrganizer { get; set; }
 
-        [Required]
         public string EventOrganizerId { get; set; }
 
         public EventType EventType { get; set; }
 
-        [Required]
         public byte EventTypeId { get;  set; }
 
-        [Required]
-        [StringLength(255)]
         public string Venue { get; set; }
 
-        [Required]
         public DateTime DateTime { get; set; }
 
         public ICollection<Attendance> Attendances { get; private set; }
